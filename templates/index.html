@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CUSIP Lookup — Investment Strategy</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 600px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: #1a56db;
+      padding: 28px 32px;
+      color: #fff;
+    }
+
+    .card-header h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .card-header p {
+      margin-top: 6px;
+      font-size: 0.875rem;
+      opacity: 0.82;
+    }
+
+    .card-body { padding: 28px 32px; }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-row input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: "SF Mono", "Fira Code", monospace;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .input-row input:focus { border-color: #1a56db; }
+
+    .input-row button {
+      padding: 10px 22px;
+      background: #1a56db;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .input-row button:hover { background: #1447c0; }
+    .input-row button:disabled { background: #93aad6; cursor: not-allowed; }
+
+    /* Results */
+    #result { margin-top: 28px; }
+
+    .spinner {
+      display: none;
+      margin-top: 24px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .spinner::before {
+      content: "";
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2.5px solid #d1d5db;
+      border-top-color: #1a56db;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-box {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: 8px;
+      padding: 14px 16px;
+      color: #b91c1c;
+      font-size: 0.9rem;
+    }
+
+    .result-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .result-sub {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+      font-family: "SF Mono", "Fira Code", monospace;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #9ca3af;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .fields-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .field {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .field-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .field-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .field-value.empty { color: #d1d5db; font-style: italic; font-weight: 400; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .badge-blue   { background: #dbeafe; color: #1d4ed8; }
+    .badge-green  { background: #dcfce7; color: #15803d; }
+    .badge-yellow { background: #fef9c3; color: #a16207; }
+    .badge-gray   { background: #f3f4f6; color: #6b7280; }
+
+    .enriched-section {
+      margin-top: 20px;
+      padding: 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+    }
+
+    .enriched-section .section-label { margin-top: 0; color: #3b82f6; }
+
+    .enriched-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .enriched-field {
+      background: #fff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <h1>Investment Strategy Lookup</h1>
+      <p>Enter a CUSIP to view enriched Salesforce field values</p>
+    </div>
+    <div class="card-body">
+      <div class="input-row">
+        <input id="cusipInput" type="text" placeholder="e.g. 00777X520" maxlength="9" />
+        <button id="lookupBtn" onclick="doLookup()">Look Up</button>
+      </div>
+
+      <div class="spinner" id="spinner">Looking up CUSIP…</div>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const input  = document.getElementById("cusipInput");
+    const btn    = document.getElementById("lookupBtn");
+    const spinner = document.getElementById("spinner");
+    const result = document.getElementById("result");
+
+    input.addEventListener("keydown", e => { if (e.key === "Enter") doLookup(); });
+
+    function badgeClass(field, value) {
+      if (!value) return "badge-gray";
+      if (field === "product_structure") return "badge-blue";
+      if (field === "asset_class")       return "badge-green";
+      return "badge-gray";
+    }
+
+    function val(v) {
+      return v
+        ? `<span class="field-value">${v}</span>`
+        : `<span class="field-value empty">—</span>`;
+    }
+
+    async function doLookup() {
+      const cusip = input.value.trim();
+      if (!cusip) return;
+
+      btn.disabled = true;
+      spinner.style.display = "block";
+      result.innerHTML = "";
+
+      try {
+        const resp = await fetch("/lookup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cusip })
+        });
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          result.innerHTML = `<div class="error-box">${data.error}</div>`;
+          return;
+        }
+
+        result.innerHTML = `
+          <div class="result-name">${data.name || "Unknown"}</div>
+          <div class="result-sub">${data.cusip}${data.ticker ? " · " + data.ticker : ""}${data.figi ? " · FIGI: " + data.figi : ""}</div>
+
+          <div class="section-label">Security Details</div>
+          <div class="fields-grid">
+            <div class="field">
+              <div class="field-label">Security Type</div>
+              ${val(data.security_type)}
+            </div>
+            <div class="field">
+              <div class="field-label">Security Type 2</div>
+              ${val(data.security_type2)}
+            </div>
+            <div class="field">
+              <div class="field-label">Market Sector</div>
+              ${val(data.market_sector)}
+            </div>
+            <div class="field">
+              <div class="field-label">Exchange</div>
+              ${val(data.exchange)}
+            </div>
+          </div>
+
+          <div class="enriched-section">
+            <div class="section-label">Salesforce Fields</div>
+            <div class="enriched-grid">
+              <div class="enriched-field">
+                <div class="field-label">Product Structure</div>
+                ${data.product_structure
+                  ? `<span class="badge badge-blue">${data.product_structure}</span>`
+                  : `<span class="field-value empty">Could not resolve</span>`}
+              </div>
+              <div class="enriched-field">
+                <div class="field-label">Asset Class</div>
+                ${data.asset_class
+                  ? `<span class="badge badge-green">${data.asset_class}</span>`
+                  : `<span class="field-value empty">Could not resolve</span>`}
+              </div>
+            </div>
+          </div>`;
+      } catch (e) {
+        result.innerHTML = `<div class="error-box">Request failed. Is the server running?</div>`;
+      } finally {
+        btn.disabled = false;
+        spinner.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

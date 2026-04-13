@@ -2,3 +2,4 @@ requests>=2.31.0
 simple-salesforce>=1.12.5
 python-dotenv>=1.0.0
 yfinance>=0.2.36
+flask>=2.2.0
