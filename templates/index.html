@@ -14,60 +14,47 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      padding: 48px 16px;
+      padding: 48px 16px 80px;
     }
 
     .card {
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      border-radius: 14px;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.09);
       width: 100%;
-      max-width: 600px;
+      max-width: 720px;
       overflow: hidden;
     }
 
     .card-header {
-      background: #1a56db;
+      background: linear-gradient(135deg, #1a56db 0%, #1447c0 100%);
       padding: 28px 32px;
       color: #fff;
     }
 
-    .card-header h1 {
-      font-size: 1.4rem;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-    }
-
-    .card-header p {
-      margin-top: 6px;
-      font-size: 0.875rem;
-      opacity: 0.82;
-    }
+    .card-header h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.3px; }
+    .card-header p  { margin-top: 5px; font-size: 0.875rem; opacity: 0.82; }
 
     .card-body { padding: 28px 32px; }
 
-    .input-row {
-      display: flex;
-      gap: 10px;
-    }
+    .input-row { display: flex; gap: 10px; }
 
     .input-row input {
       flex: 1;
-      padding: 10px 14px;
+      padding: 11px 14px;
       border: 1.5px solid #d1d5db;
       border-radius: 8px;
       font-size: 1rem;
       font-family: "SF Mono", "Fira Code", monospace;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       outline: none;
       transition: border-color 0.15s;
     }
-
     .input-row input:focus { border-color: #1a56db; }
 
     .input-row button {
-      padding: 10px 22px;
+      padding: 11px 24px;
       background: #1a56db;
       color: #fff;
       border: none;
@@ -76,75 +63,85 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s;
-      white-space: nowrap;
     }
-
-    .input-row button:hover { background: #1447c0; }
+    .input-row button:hover    { background: #1447c0; }
     .input-row button:disabled { background: #93aad6; cursor: not-allowed; }
 
-    /* Results */
-    #result { margin-top: 28px; }
-
+    /* Spinner */
     .spinner {
       display: none;
-      margin-top: 24px;
+      margin-top: 28px;
       text-align: center;
       color: #6b7280;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
     }
-
     .spinner::before {
       content: "";
       display: inline-block;
-      width: 18px; height: 18px;
-      border: 2.5px solid #d1d5db;
+      width: 16px; height: 16px;
+      border: 2.5px solid #e5e7eb;
       border-top-color: #1a56db;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       vertical-align: middle;
       margin-right: 8px;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Error */
     .error-box {
+      margin-top: 24px;
       background: #fef2f2;
       border: 1px solid #fca5a5;
       border-radius: 8px;
       padding: 14px 16px;
       color: #b91c1c;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
     }
+
+    /* Result layout */
+    #result { margin-top: 28px; }
 
     .result-name {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #111827;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
-
-    .result-sub {
-      font-size: 0.85rem;
+    .result-meta {
+      font-size: 0.8rem;
       color: #6b7280;
-      margin-bottom: 20px;
       font-family: "SF Mono", "Fira Code", monospace;
+      margin-bottom: 6px;
+    }
+    .result-desc {
+      font-size: 0.82rem;
+      color: #4b5563;
+      line-height: 1.55;
+      margin-bottom: 20px;
+      padding: 12px 14px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border-left: 3px solid #d1d5db;
     }
 
+    /* Section headers */
     .section-label {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.9px;
       color: #9ca3af;
-      margin-bottom: 10px;
-      margin-top: 20px;
+      margin: 20px 0 10px;
     }
 
+    /* Generic field grid */
     .fields-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
+    .fields-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
 
     .field {
       background: #f9fafb;
@@ -152,169 +149,169 @@
       border-radius: 8px;
       padding: 12px 14px;
     }
-
     .field-label {
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.68rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: #9ca3af;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
-
-    .field-value {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #111827;
-    }
-
+    .field-value       { font-size: 0.9rem; font-weight: 600; color: #111827; }
     .field-value.empty { color: #d1d5db; font-style: italic; font-weight: 400; }
 
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    .badge-blue   { background: #dbeafe; color: #1d4ed8; }
-    .badge-green  { background: #dcfce7; color: #15803d; }
-    .badge-yellow { background: #fef9c3; color: #a16207; }
-    .badge-gray   { background: #f3f4f6; color: #6b7280; }
-
-    .enriched-section {
+    /* Salesforce enriched section */
+    .sf-section {
       margin-top: 20px;
-      padding: 16px;
       background: #eff6ff;
       border: 1px solid #bfdbfe;
-      border-radius: 8px;
+      border-radius: 10px;
+      padding: 16px 18px;
     }
-
-    .enriched-section .section-label { margin-top: 0; color: #3b82f6; }
-
-    .enriched-grid {
+    .sf-section .section-label { color: #2563eb; margin-top: 0; }
+    .sf-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 10px;
     }
-
-    .enriched-field {
+    .sf-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .sf-field {
       background: #fff;
       border: 1px solid #bfdbfe;
       border-radius: 8px;
       padding: 12px 14px;
     }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .badge-blue   { background: #dbeafe; color: #1d4ed8; }
+    .badge-green  { background: #dcfce7; color: #15803d; }
+    .badge-purple { background: #f3e8ff; color: #7e22ce; }
+    .badge-orange { background: #fff7ed; color: #c2410c; }
+    .badge-teal   { background: #ccfbf1; color: #0f766e; }
+    .badge-gray   { background: #f3f4f6; color: #6b7280; }
+
+    .unresolved { font-size: 0.8rem; color: #9ca3af; font-style: italic; }
+
+    @media (max-width: 520px) {
+      .fields-grid, .sf-grid { grid-template-columns: 1fr; }
+      .fields-grid.cols-3, .sf-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+      .card-body, .card-header { padding: 20px; }
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="card-header">
-      <h1>Investment Strategy Lookup</h1>
-      <p>Enter a CUSIP to view enriched Salesforce field values</p>
-    </div>
-    <div class="card-body">
-      <div class="input-row">
-        <input id="cusipInput" type="text" placeholder="e.g. 00777X520" maxlength="9" />
-        <button id="lookupBtn" onclick="doLookup()">Look Up</button>
-      </div>
-
-      <div class="spinner" id="spinner">Looking up CUSIP…</div>
-      <div id="result"></div>
-    </div>
+<div class="card">
+  <div class="card-header">
+    <h1>Investment Strategy Lookup</h1>
+    <p>Enter a CUSIP to view enriched Salesforce field values</p>
   </div>
+  <div class="card-body">
+    <div class="input-row">
+      <input id="cusipInput" type="text" placeholder="e.g. 00777X520" maxlength="9" />
+      <button id="lookupBtn" onclick="doLookup()">Look Up</button>
+    </div>
+    <div class="spinner" id="spinner">Looking up CUSIP…</div>
+    <div id="result"></div>
+  </div>
+</div>
 
-  <script>
-    const input  = document.getElementById("cusipInput");
-    const btn    = document.getElementById("lookupBtn");
-    const spinner = document.getElementById("spinner");
-    const result = document.getElementById("result");
+<script>
+  const input   = document.getElementById("cusipInput");
+  const btn     = document.getElementById("lookupBtn");
+  const spinner = document.getElementById("spinner");
+  const result  = document.getElementById("result");
 
-    input.addEventListener("keydown", e => { if (e.key === "Enter") doLookup(); });
+  input.addEventListener("keydown", e => { if (e.key === "Enter") doLookup(); });
 
-    function badgeClass(field, value) {
-      if (!value) return "badge-gray";
-      if (field === "product_structure") return "badge-blue";
-      if (field === "asset_class")       return "badge-green";
-      return "badge-gray";
-    }
+  function fv(value, badgeClass) {
+    if (!value) return `<span class="field-value empty">—</span>`;
+    if (badgeClass) return `<span class="badge ${badgeClass}">${value}</span>`;
+    return `<span class="field-value">${value}</span>`;
+  }
 
-    function val(v) {
-      return v
-        ? `<span class="field-value">${v}</span>`
-        : `<span class="field-value empty">—</span>`;
-    }
+  function sfField(label, value, badgeClass) {
+    return `
+      <div class="sf-field">
+        <div class="field-label">${label}</div>
+        ${fv(value, badgeClass)}
+      </div>`;
+  }
 
-    async function doLookup() {
-      const cusip = input.value.trim();
-      if (!cusip) return;
+  function rawField(label, value) {
+    return `
+      <div class="field">
+        <div class="field-label">${label}</div>
+        ${fv(value)}
+      </div>`;
+  }
 
-      btn.disabled = true;
-      spinner.style.display = "block";
-      result.innerHTML = "";
+  async function doLookup() {
+    const cusip = input.value.trim();
+    if (!cusip) return;
 
-      try {
-        const resp = await fetch("/lookup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cusip })
-        });
-        const data = await resp.json();
+    btn.disabled = true;
+    spinner.style.display = "block";
+    result.innerHTML = "";
 
-        if (!resp.ok) {
-          result.innerHTML = `<div class="error-box">${data.error}</div>`;
-          return;
-        }
+    try {
+      const resp = await fetch("/lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cusip })
+      });
+      const d = await resp.json();
 
-        result.innerHTML = `
-          <div class="result-name">${data.name || "Unknown"}</div>
-          <div class="result-sub">${data.cusip}${data.ticker ? " · " + data.ticker : ""}${data.figi ? " · FIGI: " + data.figi : ""}</div>
-
-          <div class="section-label">Security Details</div>
-          <div class="fields-grid">
-            <div class="field">
-              <div class="field-label">Security Type</div>
-              ${val(data.security_type)}
-            </div>
-            <div class="field">
-              <div class="field-label">Security Type 2</div>
-              ${val(data.security_type2)}
-            </div>
-            <div class="field">
-              <div class="field-label">Market Sector</div>
-              ${val(data.market_sector)}
-            </div>
-            <div class="field">
-              <div class="field-label">Exchange</div>
-              ${val(data.exchange)}
-            </div>
-          </div>
-
-          <div class="enriched-section">
-            <div class="section-label">Salesforce Fields</div>
-            <div class="enriched-grid">
-              <div class="enriched-field">
-                <div class="field-label">Product Structure</div>
-                ${data.product_structure
-                  ? `<span class="badge badge-blue">${data.product_structure}</span>`
-                  : `<span class="field-value empty">Could not resolve</span>`}
-              </div>
-              <div class="enriched-field">
-                <div class="field-label">Asset Class</div>
-                ${data.asset_class
-                  ? `<span class="badge badge-green">${data.asset_class}</span>`
-                  : `<span class="field-value empty">Could not resolve</span>`}
-              </div>
-            </div>
-          </div>`;
-      } catch (e) {
-        result.innerHTML = `<div class="error-box">Request failed. Is the server running?</div>`;
-      } finally {
-        btn.disabled = false;
-        spinner.style.display = "none";
+      if (!resp.ok) {
+        result.innerHTML = `<div class="error-box">${d.error}</div>`;
+        return;
       }
+
+      result.innerHTML = `
+        <div class="result-name">${d.name || "Unknown"}</div>
+        <div class="result-meta">
+          ${d.cusip}${d.ticker ? " · " + d.ticker : ""}${d.figi ? " · FIGI: " + d.figi : ""}${d.fund_family ? " · " + d.fund_family : ""}
+        </div>
+        ${d.description ? `<div class="result-desc">${d.description}</div>` : ""}
+
+        <div class="section-label">Security Details</div>
+        <div class="fields-grid cols-3">
+          ${rawField("Security Type",   d.security_type)}
+          ${rawField("Security Type 2", d.security_type2)}
+          ${rawField("Market Sector",   d.market_sector)}
+          ${rawField("Exchange",        d.exchange)}
+          ${rawField("yFinance Category", d.yf_category)}
+          ${rawField("Currency",        "USD")}
+        </div>
+
+        <div class="sf-section">
+          <div class="section-label">Salesforce Fields — Investment_Strategy__c</div>
+          <div class="sf-grid cols-3">
+            ${sfField("Product Structure",  d.product_structure,  "badge-blue")}
+            ${sfField("Asset Class",         d.asset_class,        "badge-green")}
+            ${sfField("Sub-Asset Class",     d.sub_asset_class,    "badge-purple")}
+            ${sfField("Active / Passive",    d.active_passive,     "badge-orange")}
+            ${sfField("Geography",           d.geography,          "badge-teal")}
+            ${sfField("Fund Type",           d.fund_type,          "badge-gray")}
+            ${sfField("Sector",              d.sector,             "badge-gray")}
+            ${sfField("Strategy AUM",        d.aum)}
+            ${sfField("Inception Date",      d.inception_date)}
+          </div>
+        </div>`;
+    } catch (e) {
+      result.innerHTML = `<div class="error-box">Request failed. Is the server running?</div>`;
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = "none";
     }
-  </script>
+  }
+</script>
 </body>
 </html>
